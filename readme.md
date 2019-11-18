@@ -4,7 +4,7 @@ A working demo application created using Packer, Ansible, Inspec and Terraform, 
 
 The purpose of this demo app is to show a working example of these tools working together.
 
-The end result is a simple Hello World script running on an EC2 instance on AWS. 
+The end result is a simple Hello World script running on an EC2 instance on AWS.
 
 * [Packer](https://www.packer.io/) is used to create an Amazon Machine Image (AMI). An AMI is like a prepared EC2 instance that has not been started up yet.
 
@@ -14,7 +14,7 @@ The end result is a simple Hello World script running on an EC2 instance on AWS.
 
 * [Terraform](https://www.terraform.io/) is used to create the minimum AWS infrastructure we need. It will use the Image created by Packer and create a small running EC2 instance within a new VPC.
 
-## You will need
+## Before you begin, You will need
 
 * You will need an AWS account and your [AWS account ID](https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html#FindingYourAWSId)
 * [Packer](https://www.packer.io/) installed locally
@@ -41,16 +41,14 @@ aws_secret_access_key = Your_SecretAccessKey
 
 ## Usage
 
-1. Clone this repo and change to the /bin folder
+1. Clone this repo
 2. Add your AWS Account ID to terraform/terraform.tfvars
-3. Validate Packer using : `packer validate -var-file=../packer/variables.json ../packer/server.json`
-4. Build the AMI with Packer using : `packer build -var-file=../packer/variables.json ../packer/server.json`
+3. Validate Packer using : `packer validate -var-file=packer/variables.json packer/server.json`
+4. Build the AMI with Packer using : `packer build -var-file=packer/variables.json packer/server.json`
 5. Deploy the image with Terraform using:
 * `cd /terraform`
 * `terraform init`
 * `terraform apply`
-
-
 
 ## Clean up
 
@@ -58,17 +56,17 @@ aws_secret_access_key = Your_SecretAccessKey
 
 `terraform destroy`
 
-### delete the AWS IAM user
+### Delete the AWS IAM user
 
 `aws iam  delete-user --user-name example`
 
-### delete the AMI created by Packer
+### Delete the AMI created by Packer
 
 First, get the AMI ID value using:
 
 `aws ec2 describe-images --filters "Name=tag:Name,Values=example.com" --profile=example --region=eu-west-1 --query 'Images[*].{ID:ImageId}'`
 
-The delete the AMI
+### Then delete the AMI
 
 `aws ec2 deregister-image --image-id ami-<value>`
 
