@@ -1,0 +1,9 @@
+- name: Install Nginx
+  apt: name={{ item }} update_cache=yes state=latest
+  with_items:
+    - nginx-core
+
+- name: Delete the default nginx landing page
+  file:
+    path: /var/www/html/index.nginx-debian.html
+    state: absent

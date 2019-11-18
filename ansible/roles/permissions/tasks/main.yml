@@ -1,0 +1,7 @@
+- name: Set /var/www ownership
+  file:
+    path: /var/www
+    state: directory
+    recurse: yes
+    owner: ubuntu
+    group: ubuntu

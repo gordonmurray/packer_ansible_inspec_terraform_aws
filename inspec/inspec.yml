@@ -1,0 +1,8 @@
+name: example.com
+title: example.com
+maintainer: Gordon Murray
+license: None
+summary: InSpec controls for example.com
+version: 0.0.1
+supports:
+  - os-family: linux
