@@ -14,9 +14,13 @@ The end result is a simple Hello World script running on an EC2 instance on AWS.
 
 * [Terraform](https://www.terraform.io/) is used to create the minimum AWS infrastructure we need. It will use the Image created by Packer and create a small running EC2 instance within a new VPC.
 
-## Working example of the Packer, Ansible and Inspec stage
+## A short video of the Packer, Ansible and Inspec stage
 
 [![asciicast](https://asciinema.org/a/aO3KtTeRAmQNJy5QZ2UJRAv0Z.svg)](https://asciinema.org/a/aO3KtTeRAmQNJy5QZ2UJRAv0Z)
+
+## A short video of the Terraform stage
+
+[![asciicast](https://asciinema.org/a/282235.svg)](https://asciinema.org/a/282235)
 
 ## Before you begin, You will need
 
