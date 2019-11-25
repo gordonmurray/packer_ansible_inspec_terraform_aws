@@ -10,7 +10,7 @@ The end result is a simple Hello World script running on an EC2 instance on AWS.
 
 * [Ansible](https://www.ansible.com/) is used within Packer to install some neccessary services while Packer is building the image.
 
-* [Inspec](https://www.inspec.io/) is used within Packer also, to perform some verfification steps to make sure Packer and Ansible have created the Image as expected.
+* [Inspec](https://www.inspec.io/) is used within Packer also, to perform some verification steps to make sure Packer and Ansible have created the Image as expected.
 
 * [Terraform](https://www.terraform.io/) is used to create the minimum AWS infrastructure we need. It will use the Image created by Packer and create a small running EC2 instance within a new VPC.
 
