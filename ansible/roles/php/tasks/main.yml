@@ -1,7 +1,11 @@
 - name: Install PHP and some related packages
-  apt: name={{ item }} update_cache=yes state=latest
-  with_items:
-    - php
-    - php-fpm
-    - php-cli
-    - php-curl
+  vars:
+    packages:
+      - php
+      - php-fpm
+      - php-cli
+      - php-curl
+  apt:
+    pkg: "{{ packages }}"
+    update_cache: yes
+    state: latest
