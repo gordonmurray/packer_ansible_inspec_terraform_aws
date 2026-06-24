@@ -1,7 +1,8 @@
+# Install the FPM and CLI SAPIs directly. The bare "php" metapackage pulls in
+# libapache2-mod-php, which drags in apache2 and takes port 80 from nginx.
 - name: Install PHP and some related packages
   ansible.builtin.apt:
     name:
-      - php
       - php-fpm
       - php-cli
       - php-curl
