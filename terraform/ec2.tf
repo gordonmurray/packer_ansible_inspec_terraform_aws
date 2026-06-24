@@ -18,6 +18,10 @@ resource "aws_instance" "example" {
   subnet_id              = aws_subnet.subnet-1a.id
   key_name               = aws_key_pair.pem-key.key_name
 
+  root_block_device {
+    encrypted = true
+  }
+
   tags = {
     Name = "example"
   }
