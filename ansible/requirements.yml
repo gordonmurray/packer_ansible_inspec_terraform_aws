@@ -1,0 +1,5 @@
+---
+# The roles use only ansible.builtin modules, which ship with ansible-core,
+# so there are no external collections to install today. Add any Galaxy
+# collections here and run `ansible-galaxy collection install -r requirements.yml`.
+collections: []
