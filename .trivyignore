@@ -1,0 +1,19 @@
+# Accepted risks for this hello-world demo and its dev toolchain image.
+# Each entry is intentional, not an oversight.
+
+# The demo is a public web server, so the subnets assign public IPs by design.
+AVD-AWS-0164
+
+# The "allow all out" egress rule; the build and instance need general outbound
+# internet access, and unrestricted egress is the AWS default.
+AVD-AWS-0104
+
+# VPC flow logs add CloudWatch cost and aren't worth it for a throwaway demo.
+AVD-AWS-0178
+
+# The toolchain image is a local/CI dev tool, not a service. Running as root
+# keeps volume mounts and tool installs simple.
+AVD-DS-0002
+
+# ...and it only runs CLI commands, so a HEALTHCHECK would be meaningless.
+AVD-DS-0026
