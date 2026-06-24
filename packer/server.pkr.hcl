@@ -68,15 +68,6 @@ build {
   }
 
   provisioner "file" {
-    source      = "../ansible/roles/nginx/templates/default"
-    destination = "/home/ubuntu/default"
-  }
-
-  provisioner "shell" {
-    inline = ["sudo mv /home/ubuntu/default /etc/nginx/sites-available/default"]
-  }
-
-  provisioner "file" {
     source      = "../app/php/src/index.php"
     destination = "/var/www/html/"
   }

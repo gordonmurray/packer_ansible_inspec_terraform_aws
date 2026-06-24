@@ -4,6 +4,6 @@
   become: true
 
   roles:
-    - nginx
     - php
+    - nginx
     - permissions
