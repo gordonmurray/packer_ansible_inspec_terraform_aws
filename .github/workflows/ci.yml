@@ -41,11 +41,9 @@ jobs:
       - run: tflint --config="$GITHUB_WORKSPACE/.tflint.hcl"
         working-directory: terraform
 
-  # Non-blocking until the Ansible roles are modernised (milestone 3).
   ansible-lint:
     name: ansible-lint
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v5
@@ -55,11 +53,9 @@ jobs:
       - run: ansible-lint
         working-directory: ansible
 
-  # Non-blocking until the template is converted to HCL2 (milestone 3).
   packer-validate:
     name: packer-validate
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v7
       - uses: hashicorp/setup-packer@v3
