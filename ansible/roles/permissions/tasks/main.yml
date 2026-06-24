@@ -1,7 +1,7 @@
 - name: Set /var/www ownership
-  file:
+  ansible.builtin.file:
     path: /var/www
     state: directory
-    recurse: yes
+    recurse: true
     owner: ubuntu
     group: ubuntu

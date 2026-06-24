@@ -1,7 +1,7 @@
 ---
 - name: Install Nginx, PHP and set folder permissions
   hosts: all
-  become: yes
+  become: true
 
   roles:
     - nginx
