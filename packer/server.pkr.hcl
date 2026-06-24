@@ -18,7 +18,7 @@ variable "region" {
 
 variable "instance_type" {
   type    = string
-  default = "t2.nano"
+  default = "t3.micro"
 }
 
 # Credentials come from the standard AWS chain (AWS_PROFILE / env vars).
