@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: terraform-linters/setup-tflint@v4
+      - uses: terraform-linters/setup-tflint@v6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - run: tflint --init --config="$GITHUB_WORKSPACE/.tflint.hcl"
