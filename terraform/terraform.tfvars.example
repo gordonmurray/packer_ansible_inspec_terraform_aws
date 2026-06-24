@@ -1,0 +1,10 @@
+# Copy to terraform.tfvars and fill in.
+
+# Your AWS account ID (the owner of the AMI built by Packer)
+aws_account_id = ""
+
+# EC2 instance type
+default_instance_type = "t2.nano"
+
+# Region is optional; defaults to eu-west-1 (or set AWS_REGION)
+# region = "eu-west-1"
