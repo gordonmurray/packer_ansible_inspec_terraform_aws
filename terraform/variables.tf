@@ -6,28 +6,11 @@ variable "region" {
 }
 
 variable "aws_account_id" {
-  // read from terraform.tfvars
+  // owner of the AMI built by Packer; read from terraform.tfvars
   type = string
 }
 
 variable "default_instance_type" {
-  // read from terraform.tfvars
+  // EC2 instance type; read from terraform.tfvars
   type = string
-}
-
-variable "default_region" {
-  // read from terraform.tfvars
-  type = string
-}
-
-variable "apply_immediately" {
-  // read from terraform.tfvars
-  type    = string
-  default = "false"
-}
-
-variable "encryption_at_rest" {
-  // read from terraform.tfvars
-  type    = string
-  default = "true"
 }
