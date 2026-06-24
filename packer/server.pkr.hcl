@@ -23,13 +23,24 @@ variable "instance_type" {
 
 # Credentials come from the standard AWS chain (AWS_PROFILE / env vars).
 source "amazon-ebs" "server" {
-  region                = var.region
-  source_ami            = "ami-02df9ea15c1778c9c"
-  instance_type         = var.instance_type
+  region        = var.region
+  instance_type = var.instance_type
+  ssh_username  = "ubuntu"
+  ami_name      = "example"
+
+  # Resolve the latest Ubuntu 24.04 LTS from Canonical at build time.
+  source_ami_filter {
+    filters = {
+      name                = "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*"
+      root-device-type    = "ebs"
+      virtualization-type = "hvm"
+    }
+    most_recent = true
+    owners      = ["099720109477"]
+  }
+
   force_deregister      = true
   force_delete_snapshot = true
-  ssh_username          = "ubuntu"
-  ami_name              = "example"
 
   tags = {
     Name = "example.com"
