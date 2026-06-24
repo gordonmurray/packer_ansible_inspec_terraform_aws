@@ -8,3 +8,6 @@ default_instance_type = "t2.nano"
 
 # Region is optional; defaults to eu-west-1 (or set AWS_REGION)
 # region = "eu-west-1"
+
+# Public key for the EC2 key pair; defaults to ~/.ssh/id_rsa.pub
+# ssh_public_key_path = "~/.ssh/id_rsa.pub"

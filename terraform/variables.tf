@@ -14,3 +14,9 @@ variable "default_instance_type" {
   // EC2 instance type; read from terraform.tfvars
   type = string
 }
+
+variable "ssh_public_key_path" {
+  // your own public key, used for the EC2 key pair
+  type    = string
+  default = "~/.ssh/id_rsa.pub"
+}
