@@ -1,7 +1,7 @@
 IMAGE ?= packer-ansible-inspec-terraform-aws-tools
 TF    := terraform -chdir=terraform
 
-.PHONY: help fmt fmt-check validate tflint ansible-lint packer-validate lint tools-build shell
+.PHONY: help fmt fmt-check validate tflint ansible-lint packer-validate lint cost tools-build shell
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -27,6 +27,9 @@ packer-validate: ## Validate the Packer template
 	cd packer && packer init . && packer validate .
 
 lint: tflint ansible-lint ## Run all linters
+
+cost: ## Estimate the monthly cost with infracost
+	infracost breakdown --path terraform
 
 tools-build: ## Build the pinned toolchain image
 	docker build -t $(IMAGE) .

@@ -86,6 +86,22 @@ public DNS is printed as an output — open it in a browser to see the page.
 - `ssh_cidr` — set to a CIDR to open SSH (port 22) to just that range. Empty by
   default, so no SSH rule is created.
 
+## Cost
+
+Roughly **$9/month** to run in `eu-west-1`, estimated with
+[Infracost](https://www.infracost.io/):
+
+| Resource | Monthly cost |
+| --- | --- |
+| EC2 instance (`t3.micro`, on-demand) | $8.32 |
+| Root EBS volume (8 GB) | $0.88 |
+| VPC, subnets, internet gateway, route tables, security group, key pair | free |
+| **Total** | **~$9.20** |
+
+Usage-based costs such as data transfer aren't included, and prices vary by
+region and over time. Regenerate the breakdown with `make cost` (needs a free
+[Infracost API key](https://dashboard.infracost.io)).
+
 ## Checks
 
 ```sh

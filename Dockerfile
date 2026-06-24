@@ -7,6 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PACKER_VERSION=1.11.2 \
     TFLINT_VERSION=0.53.0 \
     TRIVY_VERSION=0.58.0 \
+    INFRACOST_VERSION=0.10.44 \
     PIPX_HOME=/opt/pipx \
     PIPX_BIN_DIR=/usr/local/bin
 
@@ -35,6 +36,10 @@ RUN pipx install --include-deps ansible && pipx install ansible-lint
 
 # CINC Auditor (the open-source InSpec distribution)
 RUN curl -fsSL https://omnitruck.cinc.sh/install.sh | bash -s -- -P cinc-auditor
+
+# Infracost (cost estimates; needs an API key at runtime)
+RUN curl -fsSL "https://github.com/infracost/infracost/releases/download/v${INFRACOST_VERSION}/infracost-linux-amd64.tar.gz" -o /tmp/ic.tgz \
+    && tar -xzf /tmp/ic.tgz -C /tmp && mv /tmp/infracost-linux-amd64 /usr/local/bin/infracost && rm /tmp/ic.tgz
 
 WORKDIR /work
 CMD ["bash"]
