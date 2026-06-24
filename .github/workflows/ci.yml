@@ -34,9 +34,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: terraform-linters/setup-tflint@v4
-      - run: tflint --init
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - run: tflint --init --config="$GITHUB_WORKSPACE/.tflint.hcl"
         working-directory: terraform
-      - run: tflint --config=${{ github.workspace }}/.tflint.hcl
+      - run: tflint --config="$GITHUB_WORKSPACE/.tflint.hcl"
         working-directory: terraform
 
   # Non-blocking until the Ansible roles are modernised (milestone 3).
