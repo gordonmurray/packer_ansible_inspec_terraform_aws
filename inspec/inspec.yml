@@ -1,8 +1,8 @@
-name: example.com
+name: example
 title: example.com
 maintainer: Gordon Murray
-license: None
-summary: InSpec controls for example.com
-version: 0.0.1
+license: MIT
+summary: CINC Auditor / InSpec controls for the example web server
+version: 0.1.0
 supports:
-  - os-family: linux
+  - platform-family: debian
