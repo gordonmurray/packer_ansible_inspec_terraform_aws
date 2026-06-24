@@ -1,11 +1,9 @@
 - name: Install PHP and some related packages
-  vars:
-    packages:
+  ansible.builtin.apt:
+    name:
       - php
       - php-fpm
       - php-cli
       - php-curl
-  ansible.builtin.apt:
-    pkg: "{{ packages }}"
     update_cache: true
-    state: latest
+    state: present
