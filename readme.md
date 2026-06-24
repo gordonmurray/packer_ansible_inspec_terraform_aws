@@ -1,80 +1,105 @@
-# Packer, Ansible, Inspec and Terraform on AWS
+# Packer, Ansible, CINC Auditor and Terraform on AWS
 
-A working demo application created using Packer, Ansible, Inspec and Terraform, deployed to AWS.
+A small, working demo of [Packer](https://www.packer.io/),
+[Ansible](https://www.ansible.com/), [CINC Auditor](https://cinc.sh/) (the
+open-source InSpec) and [Terraform](https://www.terraform.io/) used together on
+AWS.
 
-The purpose of this demo app is to show a working example of these tools working together.
+The end result is a "Hello World" PHP page served by nginx on a single EC2
+instance in its own VPC.
 
-The end result is a simple Hello World script running on an EC2 instance on AWS.
+- **Packer** builds an Amazon Machine Image (AMI).
+- **Ansible** runs inside Packer to install nginx and PHP and configure the site.
+- **CINC Auditor** runs inside Packer to verify the image looks the way we expect.
+- **Terraform** creates a small VPC and launches an EC2 instance from that AMI.
 
-* [Packer](https://www.packer.io/) is used to create an Amazon Machine Image (AMI). An AMI is like a prepared EC2 instance that has not been started up yet.
+## What you need
 
-* [Ansible](https://www.ansible.com/) is used within Packer to install some neccessary services while Packer is building the image.
+- An AWS account, with credentials available to your shell (see below).
+- [Packer](https://developer.hashicorp.com/packer) >= 1.7
+- [Terraform](https://developer.hashicorp.com/terraform) >= 1.0
+- [CINC Auditor](https://cinc.sh/start/auditor/) — only if you want to run the
+  checks outside Packer.
 
-* [Inspec](https://www.inspec.io/) is used within Packer also, to perform some verification steps to make sure Packer and Ansible have created the Image as expected.
+Or skip installing them and use the pinned toolchain image, which has matching
+versions of everything:
 
-* [Terraform](https://www.terraform.io/) is used to create the minimum AWS infrastructure we need. It will use the Image created by Packer and create a small running EC2 instance within a new VPC.
-
-## A short video of the Packer, Ansible and Inspec stage
-
-[![asciicast](https://asciinema.org/a/aO3KtTeRAmQNJy5QZ2UJRAv0Z.svg)](https://asciinema.org/a/aO3KtTeRAmQNJy5QZ2UJRAv0Z)
-
-## A short video of the Terraform stage
-
-[![asciicast](https://asciinema.org/a/282235.svg)](https://asciinema.org/a/282235)
-
-## Before you begin, You will need
-
-* You will need an AWS account and your [AWS account ID](https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html#FindingYourAWSId)
-* [Packer](https://www.packer.io/) installed locally
-* [Terraform](https://www.terraform.io/) installed locally
-* [Inspec](https://www.inspec.io/) installed locally
-
-## Create an AWS user
-
-Use the following steps to create a new user in your AWS account and give it permission to create EC2 instances and Route53 zones. This will be used by Packer and Terraform to create an AMI and an EC2 instance.
-
-* `aws iam create-user --user-name example`
-* `aws iam create-access-key --user-name example`
-* ( Make sure to save the AccessKeyId and SecretAccessKey from the output)
-* `aws iam attach-user-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess --user-name example`
-* `aws iam attach-user-policy --policy-arn arn:aws:iam::aws:policy/AmazonRoute53FullAccess --user-name example`
-* Create a file at ~/.aws/credentials with the following content: 
-
+```sh
+make tools-build
+make shell
 ```
-[example]
-aws_access_key_id = Your_AccessKeyId
-aws_secret_access_key = Your_SecretAccessKey
+
+## AWS credentials
+
+Packer and Terraform both use the standard AWS credential chain, so set a
+profile (or the usual `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`) before you
+start:
+
+```sh
+export AWS_PROFILE=your-profile
+export AWS_REGION=eu-west-1
 ```
-* Copy your public key so Terraform can use it to create a .pem file which you can use to SSH in to the EC2 instance if needed: `cat ~/.ssh/id_rsa.pub > ../terraform/files/id_rsa.pub`
 
-## Usage
+Use an identity that can manage EC2 and VPC resources. Prefer a least-privilege
+IAM role or AWS IAM Identity Center (SSO) over long-lived access keys.
 
-1. Clone this repo
-2. Add your AWS Account ID to terraform/terraform.tfvars
-3. Validate Packer using : `packer validate -var-file=packer/variables.json packer/server.json`
-4. Build the AMI with Packer using : `packer build -var-file=packer/variables.json packer/server.json`
-5. Deploy the image with Terraform using:
-* `cd /terraform`
-* `terraform init`
-* `terraform apply`
+## Build the AMI
+
+```sh
+cd packer
+packer init .
+packer validate .
+packer build .
+```
+
+This builds from the latest Ubuntu 24.04 LTS, runs the Ansible roles, and
+verifies the result with CINC Auditor.
+
+## Deploy with Terraform
+
+```sh
+cd terraform
+cp terraform.tfvars.example terraform.tfvars   # then set aws_account_id
+terraform init
+terraform apply
+```
+
+`aws_account_id` is the account that owns the AMI Packer built. The instance's
+public DNS is printed as an output — open it in a browser to see the page.
+
+### Optional variables
+
+- `region` — defaults to `eu-west-1` (or set `AWS_REGION`).
+- `default_instance_type` — defaults to `t3.micro`.
+- `ssh_public_key_path` — public key for the EC2 key pair, defaults to
+  `~/.ssh/id_rsa.pub`.
+- `ssh_cidr` — set to a CIDR to open SSH (port 22) to just that range. Empty by
+  default, so no SSH rule is created.
+
+## Checks
+
+```sh
+make fmt-check    # terraform fmt
+make validate     # terraform validate
+make lint         # tflint + ansible-lint
+```
+
+CI runs the same checks on every pull request. There's also a
+[pre-commit](https://pre-commit.com/) config:
+
+```sh
+pre-commit install
+```
 
 ## Clean up
 
-### Terraform destroy
+```sh
+cd terraform
+terraform destroy
+```
 
-`terraform destroy`
+To remove the AMI, deregister it from the EC2 console or with the AWS CLI.
 
-### Delete the AWS IAM user
+## License
 
-`aws iam  delete-user --user-name example`
-
-### Delete the AMI created by Packer
-
-First, get the AMI ID value using:
-
-`aws ec2 describe-images --filters "Name=tag:Name,Values=example.com" --profile=example --region=eu-west-1 --query 'Images[*].{ID:ImageId}'`
-
-### Then delete the AMI
-
-`aws ec2 deregister-image --image-id ami-<value>`
-
+[MIT](LICENSE)
