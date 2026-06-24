@@ -1,0 +1,67 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: terraform
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+      - name: fmt
+        run: terraform fmt -check -recursive
+      - name: init
+        run: terraform init -backend=false -input=false
+      - name: validate
+        run: terraform validate
+
+  tflint:
+    name: tflint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: terraform-linters/setup-tflint@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - run: tflint --init --config="$GITHUB_WORKSPACE/.tflint.hcl"
+        working-directory: terraform
+      - run: tflint --config="$GITHUB_WORKSPACE/.tflint.hcl"
+        working-directory: terraform
+
+  # Non-blocking until the Ansible roles are modernised (milestone 3).
+  ansible-lint:
+    name: ansible-lint
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ansible-lint
+      - run: ansible-lint
+        working-directory: ansible
+
+  # Non-blocking until the template is converted to HCL2 (milestone 3).
+  packer-validate:
+    name: packer-validate
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-packer@v3
+      - run: packer init . && packer validate .
+        working-directory: packer
