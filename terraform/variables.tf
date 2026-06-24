@@ -20,3 +20,9 @@ variable "ssh_public_key_path" {
   type    = string
   default = "~/.ssh/id_rsa.pub"
 }
+
+variable "ssh_cidr" {
+  // CIDR allowed to SSH in; empty means no SSH rule is created
+  type    = string
+  default = ""
+}
