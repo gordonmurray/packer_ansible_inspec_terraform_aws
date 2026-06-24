@@ -8,3 +8,17 @@
   ansible.builtin.file:
     path: /var/www/html/index.nginx-debian.html
     state: absent
+
+- name: Detect the installed PHP version
+  ansible.builtin.command: php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;"
+  register: nginx_php_version
+  changed_when: false
+
+- name: Deploy the nginx site config
+  ansible.builtin.template:
+    src: default.j2
+    dest: /etc/nginx/sites-available/default
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload nginx
