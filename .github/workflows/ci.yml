@@ -18,7 +18,7 @@ jobs:
         working-directory: terraform
     steps:
       - uses: actions/checkout@v7
-      - uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: 1.10.5
       - name: fmt
