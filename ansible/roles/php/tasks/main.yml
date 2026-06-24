@@ -5,7 +5,7 @@
       - php-fpm
       - php-cli
       - php-curl
-  apt:
+  ansible.builtin.apt:
     pkg: "{{ packages }}"
-    update_cache: yes
+    update_cache: true
     state: latest

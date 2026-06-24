@@ -2,12 +2,12 @@
   vars:
     packages:
       - nginx-core
-  apt:
+  ansible.builtin.apt:
     pkg: "{{ packages }}"
-    update_cache: yes
+    update_cache: true
     state: latest
 
 - name: Delete the default nginx landing page
-  file:
+  ansible.builtin.file:
     path: /var/www/html/index.nginx-debian.html
     state: absent
