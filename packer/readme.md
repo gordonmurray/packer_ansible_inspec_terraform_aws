@@ -1,7 +1,15 @@
-## Validate an image file
+## Validate the template
 
-packer validate -var-file=../packer/variables.json ../packer/server.json
+```sh
+packer init .
+packer validate .
+```
 
 ## Build the image
 
-packer build -var-file=../packer/variables.json ../packer/server.json
+```sh
+packer build .
+```
+
+Run from this `packer/` directory. Credentials come from the standard AWS
+chain (`AWS_PROFILE` or the usual environment variables).
