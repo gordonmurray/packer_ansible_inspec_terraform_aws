@@ -4,7 +4,7 @@
 aws_account_id = ""
 
 # EC2 instance type
-default_instance_type = "t2.nano"
+default_instance_type = "t3.micro"
 
 # Region is optional; defaults to eu-west-1 (or set AWS_REGION)
 # region = "eu-west-1"

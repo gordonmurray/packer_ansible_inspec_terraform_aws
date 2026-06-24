@@ -11,8 +11,9 @@ variable "aws_account_id" {
 }
 
 variable "default_instance_type" {
-  // EC2 instance type; read from terraform.tfvars
-  type = string
+  // EC2 instance type; override in terraform.tfvars
+  type    = string
+  default = "t3.micro"
 }
 
 variable "ssh_public_key_path" {
