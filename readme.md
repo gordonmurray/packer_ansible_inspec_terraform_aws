@@ -13,6 +13,16 @@ instance in its own VPC.
 - **CINC Auditor** runs inside Packer to verify the image looks the way we expect.
 - **Terraform** creates a small VPC and launches an EC2 instance from that AMI.
 
+## Watch it run
+
+Building the image with Packer, Ansible and the verification checks:
+
+[![asciicast](https://asciinema.org/a/aO3KtTeRAmQNJy5QZ2UJRAv0Z.svg)](https://asciinema.org/a/aO3KtTeRAmQNJy5QZ2UJRAv0Z)
+
+Deploying with Terraform:
+
+[![asciicast](https://asciinema.org/a/282235.svg)](https://asciinema.org/a/282235)
+
 ## What you need
 
 - An AWS account, with credentials available to your shell (see below).
@@ -99,7 +109,3 @@ terraform destroy
 ```
 
 To remove the AMI, deregister it from the EC2 console or with the AWS CLI.
-
-## License
-
-[MIT](LICENSE)
