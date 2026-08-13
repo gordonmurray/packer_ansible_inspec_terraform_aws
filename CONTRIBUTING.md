@@ -27,6 +27,17 @@ make lint
 CI runs the same checks. The `terraform` and `terraform-test` jobs have to pass before a PR
 can merge.
 
+`terraform/.terraform.lock.hcl` is committed and `init` runs with `-lockfile=readonly`, so the
+provider version is the same everywhere. It carries hashes for linux and macOS on both amd64
+and arm64. If you are on something else, or you change the provider requirement, refresh it:
+
+```sh
+cd terraform
+terraform providers lock \
+  -platform=linux_amd64 -platform=linux_arm64 \
+  -platform=darwin_amd64 -platform=darwin_arm64
+```
+
 ## Pull requests
 
 - Branch off `main`, one change per PR.

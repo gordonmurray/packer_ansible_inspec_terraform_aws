@@ -14,7 +14,7 @@ fmt-check: ## Check Terraform formatting
 	$(TF) fmt -check
 
 validate: ## Init (no backend) and validate the Terraform
-	$(TF) init -backend=false -input=false
+	$(TF) init -backend=false -input=false -lockfile=readonly
 	$(TF) validate
 
 # The AWS provider is mocked, so this needs no credentials. The key is only
