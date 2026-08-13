@@ -107,8 +107,14 @@ region and over time. Regenerate the breakdown with `make cost` (needs a free
 ```sh
 make fmt-check    # terraform fmt
 make validate     # terraform validate
+make test         # plan-level tests, AWS provider mocked
 make lint         # tflint + ansible-lint
 ```
+
+`make test` plans the whole stack with the AWS provider mocked, so it checks what should not
+quietly change — IMDSv2, the encrypted root volume, SSH staying shut unless `ssh_cidr` is set,
+the subnets matching the region — without AWS credentials. It is what catches a provider
+upgrade that changes a default before it reaches a real apply.
 
 CI runs the same checks on every pull request. There's also a
 [pre-commit](https://pre-commit.com/) config:

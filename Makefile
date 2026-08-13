@@ -1,7 +1,7 @@
 IMAGE ?= packer-ansible-inspec-terraform-aws-tools
 TF    := terraform -chdir=terraform
 
-.PHONY: help fmt fmt-check validate tflint ansible-lint packer-validate lint cost tools-build shell
+.PHONY: help fmt fmt-check validate test tflint ansible-lint packer-validate lint cost tools-build shell
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -16,6 +16,14 @@ fmt-check: ## Check Terraform formatting
 validate: ## Init (no backend) and validate the Terraform
 	$(TF) init -backend=false -input=false
 	$(TF) validate
+
+# The AWS provider is mocked, so this needs no credentials. The key is only
+# there because terraform test evaluates file(), unlike terraform validate.
+test: ## Run the plan-level Terraform tests (no AWS access needed)
+	@mkdir -p terraform/tests/fixtures
+	@test -f terraform/tests/fixtures/id_rsa.pub || \
+		ssh-keygen -t ed25519 -N "" -C ci -f terraform/tests/fixtures/id_rsa
+	$(TF) test
 
 tflint: ## Lint the Terraform
 	cd terraform && tflint --init && tflint --config=$(CURDIR)/.tflint.hcl
