@@ -23,8 +23,10 @@ jobs:
           terraform_version: 1.10.5
       - name: fmt
         run: terraform fmt -check -recursive
+      # -lockfile=readonly so a lock file that does not match the config fails
+      # here, rather than being quietly repaired and passing.
       - name: init
-        run: terraform init -backend=false -input=false
+        run: terraform init -backend=false -input=false -lockfile=readonly
       - name: validate
         run: terraform validate
 
@@ -46,8 +48,10 @@ jobs:
         run: |
           mkdir -p tests/fixtures
           ssh-keygen -t ed25519 -N "" -C ci -f tests/fixtures/id_rsa
+      # -lockfile=readonly so a lock file that does not match the config fails
+      # here, rather than being quietly repaired and passing.
       - name: init
-        run: terraform init -backend=false -input=false
+        run: terraform init -backend=false -input=false -lockfile=readonly
       # The AWS provider is mocked, so this plans with no credentials.
       - name: test
         run: terraform test
