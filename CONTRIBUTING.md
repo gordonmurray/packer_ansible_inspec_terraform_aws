@@ -20,10 +20,12 @@ Before opening a pull request, run:
 ```sh
 make fmt-check
 make validate
+make test
 make lint
 ```
 
-CI runs the same checks. The `terraform` job has to pass before a PR can merge.
+CI runs the same checks. The `terraform` and `terraform-test` jobs have to pass before a PR
+can merge.
 
 ## Pull requests
 

@@ -28,6 +28,30 @@ jobs:
       - name: validate
         run: terraform validate
 
+  terraform-test:
+    name: terraform-test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - uses: actions/checkout@v7
+      - uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.10.5
+          terraform_wrapper: false
+      # terraform test evaluates file(), which terraform validate does not, so
+      # the key referenced by ssh_public_key_path has to exist.
+      - name: Throwaway key for the plan
+        run: |
+          mkdir -p tests/fixtures
+          ssh-keygen -t ed25519 -N "" -C ci -f tests/fixtures/id_rsa
+      - name: init
+        run: terraform init -backend=false -input=false
+      # The AWS provider is mocked, so this plans with no credentials.
+      - name: test
+        run: terraform test
+
   tflint:
     name: tflint
     runs-on: ubuntu-latest

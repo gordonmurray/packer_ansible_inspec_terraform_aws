@@ -5,5 +5,9 @@ terraform/terraform.tfstate.backup
 terraform/terraform.tfvars
 terraform/files/
 
+# Throwaway key generated for terraform test, never a real one
+terraform/tests/fixtures/id_rsa
+terraform/tests/fixtures/id_rsa.pub
+
 # infracost cache
 terraform/.infracost/
