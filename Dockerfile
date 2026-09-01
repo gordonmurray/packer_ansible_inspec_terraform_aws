@@ -1,6 +1,6 @@
 # Pinned toolchain for building and checking this project, so local runs
 # match CI. Build with `make tools-build`, then `make shell`.
-FROM ubuntu:25.10
+FROM ubuntu:26.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
     TERRAFORM_VERSION=1.10.5 \
