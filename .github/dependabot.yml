@@ -3,14 +3,26 @@ updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
+    groups:
+      github-actions:
+        patterns:
+          - "*"
 
   - package-ecosystem: terraform
     directory: /terraform
     schedule:
-      interval: weekly
+      interval: monthly
+    groups:
+      terraform-providers:
+        patterns:
+          - "*"
 
   - package-ecosystem: docker
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
+    groups:
+      docker-images:
+        patterns:
+          - "*"
