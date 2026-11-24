@@ -89,6 +89,10 @@ jobs:
       - uses: hashicorp/setup-packer@v3
       - run: packer init . && packer validate .
         working-directory: packer
+        env:
+          # packer init looks up plugin releases on the GitHub API; without a
+          # token the shared runner IPs get rate limited.
+          PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   trivy-config:
     name: trivy-config
