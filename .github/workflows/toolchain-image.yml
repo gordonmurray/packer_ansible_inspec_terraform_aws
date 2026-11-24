@@ -1,0 +1,30 @@
+name: toolchain-image
+
+# Builds the pinned toolchain image. Runs when the Dockerfile changes
+# (including Dependabot base-image bumps) and monthly, so a pinned tool
+# that disappears upstream gets noticed.
+on:
+  pull_request:
+    paths:
+      - Dockerfile
+      - .github/workflows/toolchain-image.yml
+  push:
+    branches: [main]
+    paths:
+      - Dockerfile
+      - .github/workflows/toolchain-image.yml
+  schedule:
+    - cron: "0 6 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build image
+        run: docker build -t toolchain .
